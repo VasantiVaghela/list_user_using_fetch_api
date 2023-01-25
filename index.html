@@ -8,19 +8,41 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="container">
-        <table class="user-table"></table>
+    <div class="title">
+        <h1>Users Details</h1>
+        <button class="add-user">Add User</button>
     </div>
-
-    <form class="user-details">
+    <div class="container">
+    
+        <table class="user-table">
+            <tbody></tbody>
+        </table>
         
-        <label for="firstname">First Name : </label>
-        <input type="text" id="firstname" >
-        <label for="lastname">Last Name : </label>
-        <input type="text" id="lastname" >
-        <label for="img">Upload your picture :</label>
-        <input type="file" id="img" name="img" accept="image/*">
-    </form>
+
+        <div class="form-div visible" action="post">
+            <h1 class="update-user-heading">Update User</h1>
+            <form class="user-details">
+                <div class="firstname-div">
+                    <label for="firstname">First Name  </label>
+                    <input type="text" id="firstname" value="" name="firstname" >
+                </div>
+                <div class="lastname-div">
+                    <label for="lastname">Last Name  </label>
+                    <input type="text" id="lastname" name="lastname" >
+                </div>
+                <div class="img-div">
+                    <label for="img">Upload your picture </label>
+                    <input type="text" id="img" name="img" >
+                </div>
+                <div class="btn-div">
+                    <input type="hidden" id="userid" value="">
+                    <input type="submit" id="submit" value="Submit" name="submit">
+                </div>
+            </form>
+        </div>
+
+        
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
     <script src="main.js"></script>
