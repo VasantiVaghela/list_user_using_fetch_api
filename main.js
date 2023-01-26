@@ -15,37 +15,119 @@ let i = u_img.value
 
 //get request to fetch user-list
  function getUsers() {
-    // const config = {
-    //     headers:{
-    //       'app-id': '63ce679debd414c08cdd7c9d',
-    //     }
-    //   };
-    // let rows = '';
-    
-    
-     axios
+    return axios
     .get('https://dummyapi.io/data/v1/user')
     .then(res => {
         console.log('getUsers',res.data.data)
         let id_array = res.data.data.map(function(obj) {
             return obj.id
         })
-        // console.log(id_array);
-        showOutput(res,id_array)
-
-        // let rows = document.getElementsByClassName('user');
-        // console.log('inside html collection:',rows)
-        // let newArray = Array.from(rows);
-        // console.log('Inside array:',newArray);
-        // return newArray
+        
+        let x = showOutput(res,id_array)
+        return x
 
     })
     .catch(err => console.log(err));
-
+  
 }
 
+getUsers().then(value => {
+    console.log('Value :' ,value)
+    let user_row_arr = value.map(function(item) {
+        return item.user 
+    })
+   
+    console.log('User Row :',user_row_arr)   // getting user rows
+
+    document.querySelector('.header').addEventListener('click', function(){
+        document.querySelector('.form-div').classList.toggle('visible')
+    })
+ 
+    value.forEach(item => {
+        console.log(item.user);
+        item.user.addEventListener('click',function() {
+            
+                // document.querySelector('.form-div').classList.toggle('visible')
+                console.log(item.user.cells)
+                let current_row_arr = Array.from(item.user.cells)
+                console.log(current_row_arr)
+                let current_img = current_row_arr[0].firstChild['src']
+                let current_firstname = current_row_arr[1].firstChild.data
+                let current_lastname = current_row_arr[2].firstChild.data
+                let current_dlt_btn = current_row_arr[3].firstChild
+                 
+                //DELETE THE USER
+    
+                current_dlt_btn.addEventListener('click',function() {
+                    console.log('delete id',item.id)
+                    let dlturl ="https://dummyapi.io/data/v1/user/"+item.id
+                    item.user.remove()
+                    axios
+                    .delete(dlturl)
+                    .then(res => {
+                        console.log(res)
+                        showUpdatedOutput(res)
+    
+                    })
+                    .catch(err => console.log(err));
+                })
+    
+            
+                fname.value = current_firstname
+                lname.value = current_lastname
+                u_img.value = current_img
+                console.log(item.id)
+
+               
+                console.log(item.id)
+                    form.addEventListener('submit', function(e){
+                        e.preventDefault();
+                        f = fname.value;
+                        l = lname.value;
+                        i = u_img.value;
+                        
+                            let url ='https://dummyapi.io/data/v1/user/'+item.id
+                            console.log('url',url)
+                            axios({
+                                  method: 'put',
+                                  url : url,
+                                  data: {
+                                    "firstName" : f,
+                                    "lastName" : l,
+                                    "picture" : i
+                                  }
+                                })
+                                .then(res => {
+                                    console.log(res);
+        
+                                    //getuser list
+                                    axios
+                                    .get('https://dummyapi.io/data/v1/user')
+                                    .then(res => {
+                                
+                                        showUpdatedOutput(res)
+                                
+                                    })
+                                    .catch(err => console.log(err))
+                                })
+                            .catch(err => console.error(err));
+                       fname.value = '';
+                       lname.value = '';
+                       u_img.value = '';
+                            
+                    })
+                   
+                
+    
+               
+        })
+        
+    })
+
+});
 
 
+ 
 // Hide and show Form div
 let addUserBtn = document.querySelector('.add-user')
 addUserBtn.addEventListener('click', function() {
@@ -56,12 +138,7 @@ addUserBtn.addEventListener('click', function() {
     
     form.addEventListener('submit', function(e){
         e.preventDefault()
-        // let postdata = {
-        //     firstName : fname.value,
-        //     lastName : lname.value,
-        //     picture : u_img.value
-        //  }
-
+       
         f = fname.value;
         l = lname.value;
         i = u_img.value;
@@ -84,7 +161,7 @@ addUserBtn.addEventListener('click', function() {
             .then(res => {
                 console.log(res)
 
-                //getuser
+                //getuser list
                 axios
                 .get('https://dummyapi.io/data/v1/user')
                 .then(res => {
@@ -93,23 +170,11 @@ addUserBtn.addEventListener('click', function() {
             
                 })
                 .catch(err => console.log(err));
-
-                
             })
             .catch(err => console.log(err)); 
-           
-       
-            
+    
     })
 })
-
-
-
-
-
-// console.log('final Array',getArray)
-
-
 
 
 //get single user
@@ -169,7 +234,7 @@ function deleteUser() {
       
   }
 
-getUsers();
+// getUsers();
 // updateUser();
 // addUser();
 // deleteUser();
@@ -180,7 +245,6 @@ getUsers();
 //function decides what to display in DOM
 
 function showOutput(res,idArr) {
-    // const userTable = document.querySelector('.user-table');
     
     let final_data = res.data.data;
     let output = `<tr class="header">
@@ -216,91 +280,16 @@ function showOutput(res,idArr) {
 
         })
         console.log(userArr)
-        // return newArray
-        userArr.forEach(item => {
-            console.log(item.user);
-            item.user.addEventListener('click',function() {
-                
-                    document.querySelector('.form-div').classList.toggle('visible')
-                    console.log(item.user.cells)
-                    let current_row_arr = Array.from(item.user.cells)
-                    console.log(current_row_arr)
-                    let current_img = current_row_arr[0].firstChild['src']
-                    let current_firstname = current_row_arr[1].firstChild.data
-                    let current_lastname = current_row_arr[2].firstChild.data
-                    let current_dlt_btn = current_row_arr[3].firstChild
-                     
-                    //DELETE THE USER
-
-                    current_dlt_btn.addEventListener('click',function() {
-                        console.log('delete id',item.id)
-                        let dlturl ="https://dummyapi.io/data/v1/user/"+item.id
-                        item.user.remove()
-                        axios
-                        .delete(dlturl)
-                        .then(res => {
-                            console.log(res)
-                            showUpdatedOutput(res)
-        
-                        })
-                        .catch(err => console.log(err));
-                    })
-
-                    // console.log('current img',current_img)
-                    // console.log(current_firstname)
-                    // console.log(current_lastname)
-                    // console.log(current_dlt_btn)
-
-                    //  fname = document.getElementById('firstname')
-                    //  lname = document.getElementById('lastname')
-                    //  u_img = document.getElementById('img')
-                    //  submit = document.querySelector('#submit')
-                    //  form = document.querySelector('.user-details')
-                    console.log('form',form)
-                    fname.value = current_firstname
-                    lname.value = current_lastname
-                    u_img.value = current_img
-                    // userid.value =item.id
-                    console.log(item.id)
-
-                    form.addEventListener('submit', function(e){
-                        e.preventDefault();
-                        f = fname.value;
-                        l = lname.value;
-                        i = u_img.value;
-                        
-                            let url ='https://dummyapi.io/data/v1/user/'+item.id
-                            console.log('url',url)
-                            axios({
-                                  method: 'put',
-                                  url : url,
-                                  data: {
-                                    "firstName" : f,
-                                    "lastName" : l,
-                                    "picture" : i
-                                  }
-                                })
-                                .then(res => {
-                                    console.log(res);
-
-                                    //getuser
-                                    axios
-                                    .get('https://dummyapi.io/data/v1/user')
-                                    .then(res => {
-                                
-                                        showUpdatedOutput(res)
-                                
-                                    })
-                                    .catch(err => console.log(err))
-                                })
-                            .catch(err => console.error(err));
-                       
-                            
-                    })
-            })
-            
-        })
+        return userArr
 }
+
+// --------------------------------------------------------------------------
+
+
+
+
+
+
 
 function showSingleUser(res){
     let singleoutput = `<tr class="header">
@@ -319,14 +308,6 @@ function showSingleUser(res){
             userTable.innerHTML = singleoutput;
 }
 
-
-
-
-
-// let rows = document.getElementsByClassName('user');
-// console.log(rows.length)
-// let newArray = Array.from(rows);
-// console.log(newArray);
 
 function showUpdatedOutput(res) {
     let final_data = res.data.data;
