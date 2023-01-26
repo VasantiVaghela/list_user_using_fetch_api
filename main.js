@@ -1,8 +1,17 @@
 axios.defaults.headers.common['app-id'] = '63ce679debd414c08cdd7c9d';
 let userTable = document.querySelector('.user-table')
 
+let fname = document.getElementById('firstname')
+let lname = document.getElementById('lastname')
+let u_img = document.getElementById('img')
+let submit = document.querySelector('#submit')
+let form = document.querySelector('.user-details')
 
-
+let f = fname.value 
+let l = lname.value 
+let i = u_img.value 
+                    
+                    
 
 //get request to fetch user-list
  function getUsers() {
@@ -14,8 +23,8 @@ let userTable = document.querySelector('.user-table')
     // let rows = '';
     
     
-    return axios
-    .get('https://dummyapi.io/data/v1/user?limit=5')
+     axios
+    .get('https://dummyapi.io/data/v1/user')
     .then(res => {
         console.log('getUsers',res.data.data)
         let id_array = res.data.data.map(function(obj) {
@@ -35,17 +44,63 @@ let userTable = document.querySelector('.user-table')
 
 }
 
-// let test = getUsers();
-
-// console.log("outside html collection:",rows)
-
-// console.log("outside Array:",test)
 
 
 // Hide and show Form div
 let addUserBtn = document.querySelector('.add-user')
 addUserBtn.addEventListener('click', function() {
     document.querySelector('.form-div').classList.toggle('visible')
+    fname.value ='';
+    lname.value = '';
+    u_img.value = '';
+    
+    form.addEventListener('submit', function(e){
+        e.preventDefault()
+        // let postdata = {
+        //     firstName : fname.value,
+        //     lastName : lname.value,
+        //     picture : u_img.value
+        //  }
+
+        f = fname.value;
+        l = lname.value;
+        i = u_img.value;
+        console.log('post first name', f)
+           
+            let url ='https://dummyapi.io/data/v1/user/create'
+            console.log('url',url)
+            let email = `someoneMath${Math.floor(Math.random() * 100)}@example.com`
+            axios({
+                method: 'post',
+                url: 'https://dummyapi.io/data/v1/user/create',
+                data: {
+                    
+                    "firstName": f ,
+                    "lastName": l,
+                    "picture": i,
+                    "email": email
+                }
+              })
+            .then(res => {
+                console.log(res)
+
+                //getuser
+                axios
+                .get('https://dummyapi.io/data/v1/user')
+                .then(res => {
+               
+                    showUpdatedOutput(res)
+            
+                })
+                .catch(err => console.log(err));
+
+                
+            })
+            .catch(err => console.log(err)); 
+           
+       
+            
+    })
 })
 
 
@@ -174,41 +229,73 @@ function showOutput(res,idArr) {
                     let current_firstname = current_row_arr[1].firstChild.data
                     let current_lastname = current_row_arr[2].firstChild.data
                     let current_dlt_btn = current_row_arr[3].firstChild
-                    
-                    // console.log(current_img)
+                     
+                    //DELETE THE USER
+
+                    current_dlt_btn.addEventListener('click',function() {
+                        console.log('delete id',item.id)
+                        let dlturl ="https://dummyapi.io/data/v1/user/"+item.id
+                        item.user.remove()
+                        axios
+                        .delete(dlturl)
+                        .then(res => {
+                            console.log(res)
+                            showUpdatedOutput(res)
+        
+                        })
+                        .catch(err => console.log(err));
+                    })
+
+                    // console.log('current img',current_img)
                     // console.log(current_firstname)
                     // console.log(current_lastname)
                     // console.log(current_dlt_btn)
 
-                    let fname = document.getElementById('firstname')
-                    let lname = document.getElementById('lastname')
-                    let u_img = document.getElementById('img')
-                    let submit = document.querySelector('#submit')
-                    let form = document.querySelector('.user-details')
+                    //  fname = document.getElementById('firstname')
+                    //  lname = document.getElementById('lastname')
+                    //  u_img = document.getElementById('img')
+                    //  submit = document.querySelector('#submit')
+                    //  form = document.querySelector('.user-details')
                     console.log('form',form)
                     fname.value = current_firstname
                     lname.value = current_lastname
                     u_img.value = current_img
-                    userid.value =item.id
+                    // userid.value =item.id
                     console.log(item.id)
-                    
+
                     form.addEventListener('submit', function(e){
-                        e.preventDefault()
-                        //update user details
-                            id = document.getElementById('userid').value
-                            axios
-                            .put('https://dummyapi.io/data/v1/user/'+id,{
-                                "id": "60d0fe4f5311236168a109d6",
-                                "firstName": "fname.value",
-                                "lastName": "lname.value",
-                                "email": "some.one@example.com",
-                                "picture": "u_img.value"
-                               }
-                            )
-                            .then(res => getUsers(res))
-                            .catch(err => console.error(err)); 
-                            // getUsers();
+                        e.preventDefault();
+                        f = fname.value;
+                        l = lname.value;
+                        i = u_img.value;
+                        
+                            let url ='https://dummyapi.io/data/v1/user/'+item.id
+                            console.log('url',url)
+                            axios({
+                                  method: 'put',
+                                  url : url,
+                                  data: {
+                                    "firstName" : f,
+                                    "lastName" : l,
+                                    "picture" : i
+                                  }
+                                })
+                                .then(res => {
+                                    console.log(res);
+
+                                    //getuser
+                                    axios
+                                    .get('https://dummyapi.io/data/v1/user')
+                                    .then(res => {
+                                
+                                        showUpdatedOutput(res)
+                                
+                                    })
+                                    .catch(err => console.log(err))
+                                })
+                            .catch(err => console.error(err));
                        
+                            
                     })
             })
             
@@ -234,12 +321,34 @@ function showSingleUser(res){
 
 
 
-let fname = document.getElementById('firstname').value
-let lname = document.getElementById('lastname').value
-let u_img = document.getElementById('img').value
-let submit = document.querySelector('#submit')
+
 
 // let rows = document.getElementsByClassName('user');
 // console.log(rows.length)
 // let newArray = Array.from(rows);
 // console.log(newArray);
+
+function showUpdatedOutput(res) {
+    let final_data = res.data.data;
+    let output = `<tr class="header">
+                        <th>Avatar</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Action</th>   
+                     </tr>`;
+           
+                final_data.forEach(usr => {
+                
+                    output += `
+                            <tr class="user">
+                                <td class="avatar"><img class="avatar-img" src="${usr.picture}" alt="${usr.firstName}"></td>
+                                <td>${usr.firstName}</td>
+                                <td>${usr.lastName}</td>
+                                <td><button class="delete-user">X</button></td>
+                            </tr>
+                            `;
+                
+                });
+            
+        userTable.innerHTML = output;
+}
