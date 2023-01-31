@@ -167,6 +167,16 @@ input[type='submit'] {
     align-self: end;
 }
 
+.add-new-user {
+    padding: 10px;
+    background-color: #55608f;
+    color: white;
+    border-color: #55608f;
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px 1px #55608f;
+    align-self: start;
+    transform: translateY(-50%);
+}
 /* th {
     flex-grow: 1;
     text-align: center;
