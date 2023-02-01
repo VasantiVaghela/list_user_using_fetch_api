@@ -16,12 +16,14 @@ let result;
 // Get User List
 getUsers()
 
+
+
 function getUsers() {
     axios
         .get('https://reqres.in/api/users?page=2')
         .then(({data:{data}}) => {
             result = data
-            console.log(data)  // User Data List
+            console.log("data",data)  // User Data List
             showOutput(data)
         })
         .catch(err => console.log(err));
