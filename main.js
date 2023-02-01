@@ -25,12 +25,20 @@ addUserBtn.addEventListener('click', function() {
     fname.setAttribute('placeholder','FirstName')
     lname.setAttribute('placeholder','LastName')
     u_img.setAttribute('placeholder','Picture')
-});      
-    // document.querySelector('.form-div').classList.add('visible')
-    addNewUserBtn.addEventListener('click', function() {
-        addUser()  
-                           
+    document.querySelector('.form-div').classList.add('visible')
+    
+}); 
+
+addNewUserBtn.addEventListener('click', function() {
+    addUser()                           //ADD NEW USER
+    fname.value=''
+    lname.value=''
+    u_img.value=''
 })
+
+// addNewUserBtn.addEventListener('click', function() {
+//     addUser()                            //ADD NEW USER
+// })
 
 function getUsers() {
     axios
@@ -44,10 +52,7 @@ function getUsers() {
         })
         .catch(err => console.log(err));
 }   
-
-
-
-// --------------------------------------------------------------------------
+// -----------------------------------------------------------------
 //Delete the User
 function deleteUser(id) {
     console.log('RESULT BEFORE FROM DELETE',result )
@@ -69,10 +74,10 @@ function deleteUser(id) {
 }
   
 //Update the User
-function updateUser(idd) {
+function updateUser(id) {
 
     axios
-    .put('https://reqres.in/api/users/'+idd,{
+    .put('https://reqres.in/api/users/'+id,{
         "first_name": fname.value,
         "last_name": lname.value,
         "avatar": u_img.value,
@@ -82,16 +87,8 @@ function updateUser(idd) {
     .then(res => {
         console.log('updateUser',res.data)
         console.log('RESULT BEFORE UPDATE',result)
-            let index = result.findIndex((user) => {
-            
-            return user.id == idd
-            // if(id === user.id){
-                
-            //     user.first_name = res.data.first_name
-            //     user.last_name = res.data.last_name
-            //     user.avatar = res.data.avatar
-            //     return user
-            // }
+        let index = result.findIndex((user) => {
+            return user.id == id
          })
          if( index !== -1) {
             result[index].first_name = res.data.first_name
@@ -99,16 +96,13 @@ function updateUser(idd) {
             result[index].avatar = res.data.avatar
          }
         
-        
         console.log('index ::',index)
         console.log('result ::',result)
         // let newResult = result
         showOutput(result)
     })
     .catch(err => console.error(err)); 
-    
 }
-
 
 //Add New User
 function addUser() {
@@ -116,6 +110,7 @@ function addUser() {
     let email =  `someone${Math.floor(Math.random() * 10000000000)}@example.com`
     axios
     .post('https://reqres.in/api/users',{
+        "id" : Math.floor(Math.random() * 1000000),
         "first_name": fname.value,
         "last_name": lname.value,
         "avatar" : u_img.value,
@@ -151,17 +146,14 @@ function showOutput(data) {
                 </tr>`;
 
         userTable.innerHTML = output;
-       
-
-        
+            //Show and Hide Form
+            let tableHeader = document.querySelector('.header')    
+            tableHeader.addEventListener('click', function() {
+                document.querySelector('.form-div').classList.toggle('visible')
+            });
     });
-//      //Show and Hide Form
-//      let tableHeader = document.querySelector('.header')    
-//      tableHeader.addEventListener('click', function() {
-//         document.querySelector('.form-div').classList.toggle('visible')
-//     });
-}
 
+}
 
 function showTableDataInForm() {
     console.log('User Rows :',userRows)  // fetch user rows
@@ -178,9 +170,6 @@ function showTableDataInForm() {
             u_img.value = cellsArray[0].firstChild['src']
             fname.value = cellsArray[1].firstChild.data
             lname.value = cellsArray[2].firstChild.data
-
-            
-            
         })
         form.addEventListener('submit', function(e) {
             e.preventDefault()

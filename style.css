@@ -49,7 +49,10 @@ table {
     /* border: 2px solid white; */
     box-shadow: 1px 1px 6px 2px  #41928f;
     border-spacing: 0px;
+    position: relative;
 }
+
+
  
 
 tr.header {
@@ -151,6 +154,7 @@ input[type='submit'] {
 #firstname,
 #lastname,
 #img {
+    text-indent: 10px;
     flex-grow: 1;
     border-radius: 5px;
     border: #49a09d;
@@ -163,7 +167,7 @@ input[type='submit'] {
     color: white;
     border-color: #55608f;
     border-radius: 5px;
-    box-shadow: 1px 1px 1px 1px #55608f;
+    box-shadow: 2px 2px 1px  #0c0d11;
     align-self: end;
 }
 
@@ -173,7 +177,7 @@ input[type='submit'] {
     color: white;
     border-color: #55608f;
     border-radius: 5px;
-    box-shadow: 1px 1px 1px 1px #55608f;
+    /* box-shadow: 1px 1px 1px 1px #55608f; */
     align-self: start;
     transform: translateY(-50%);
 }
