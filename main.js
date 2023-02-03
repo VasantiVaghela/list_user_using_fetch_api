@@ -10,6 +10,7 @@ let submit = document.querySelector('#submit')
 let form = document.querySelector('.user-details')
 let addUserBtn = document.querySelector('.add-user')
 let addNewUserBtn = document.querySelector('.add-new-user')
+let closeModal = document.querySelector('close-modal')
 
 let result;
 
@@ -18,6 +19,7 @@ getUsers()
 
 //ADD NEW USER
 addUserBtn.addEventListener('click', function() {
+    document.querySelector('.modal').style.display = 'block';
     console.log('RESULT FROM ADDUSER', result)
     fname.value=''
     lname.value=''
@@ -25,15 +27,22 @@ addUserBtn.addEventListener('click', function() {
     fname.setAttribute('placeholder','FirstName')
     lname.setAttribute('placeholder','LastName')
     u_img.setAttribute('placeholder','Picture')
-    document.querySelector('.form-div').classList.add('visible')
-    
+    // document.querySelector('.form-div').classList.add('visible')
+     
 }); 
 
 addNewUserBtn.addEventListener('click', function() {
+    
     addUser()                 //ADD NEW USER
     fname.value=''
     lname.value=''
     u_img.value=''
+   
+    document.querySelector('.modal').style.display = 'none';
+})
+
+closeModal.addEventListener('click', function() {
+    document.querySelector('.modal').getElementsByClassName.display = 'none';
 })
 
 // addNewUserBtn.addEventListener('click', function() {
@@ -142,7 +151,7 @@ function showOutput(data) {
                     <td class="avatar"><img class="avatar-img" src="${user.avatar}" alt="${user.first_name}"></td>
                     <td>${user.first_name}</td>
                     <td>${user.last_name}</td>
-                    <td><button class="delete-user" onClick="deleteUser(${user.id})">X</button></td>
+                    <td><button class="delete-user" onClick="deleteUser(${user.id})"><i class="fa-solid fa-trash-can"></i></button></td>
                 </tr>`;
 
         userTable.innerHTML = output;
@@ -163,6 +172,7 @@ function showTableDataInForm() {
     userRowArray.map(row => {
         
         row.addEventListener('click',function() {
+            document.querySelector('.modal').style.display = 'block';
             ID = row.getAttribute('id')
             console.log('ID',ID)
             let cellsArray = Array.from(row.cells)
@@ -175,10 +185,11 @@ function showTableDataInForm() {
             e.preventDefault()
             updateUser(ID)
             ID = undefined
-            // document.querySelector('.form-div').classList.remove('visible')
+           
             fname.value=''
             lname.value=''
             u_img.value=''
+            document.querySelector('.modal').style.display = 'none';
         })
        
     })

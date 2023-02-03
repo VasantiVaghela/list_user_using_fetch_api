@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
     <link rel="stylesheet" href="style.css">
     <title>Document</title>
 </head>
@@ -13,15 +14,16 @@
         <button class="add-user" >Add User</button>
     </div>
     <div class="container">
-    
+  
         <table class="user-table">
            
         </table>
         
 
-        <div class="form-div" action="post">
-            <h1 class="update-user-heading">Update User</h1>
-            <form class="user-details">
+        <div class="form-div modal" action="post">
+            <!-- <h1 class="update-user-heading">Update User</h1> -->
+            <form class="user-details modal-content">
+                <button class="close-modal">X</button>
                 <div class="firstname-div">
                     <label for="firstname">First Name  </label>
                     <input type="text" id="firstname" value="" name="firstname" >
