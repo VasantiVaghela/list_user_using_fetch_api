@@ -30,7 +30,7 @@ addUserBtn.addEventListener('click', function() {
 }); 
 
 addNewUserBtn.addEventListener('click', function() {
-    addUser()                           //ADD NEW USER
+    addUser()                 //ADD NEW USER
     fname.value=''
     lname.value=''
     u_img.value=''
@@ -108,7 +108,7 @@ function updateUser(id) {
 function addUser() {
     console.log('RESULT BEFORE ADD REQUEST',result)
     let email =  `someone${Math.floor(Math.random() * 10000000000)}@example.com`
-    axios
+   return axios
     .post('https://reqres.in/api/users',{
         "id" : Math.floor(Math.random() * 1000000),
         "first_name": fname.value,
@@ -120,9 +120,9 @@ function addUser() {
         console.log('addUser',res)
         console.log('addUser data',res.data)
         result.unshift(res.data)
-        console.log('RESULT OF ADD REQUEST',result)
-        showOutput(result)
-       
+        // console.log('RESULT OF ADD REQUEST',result)
+        showOutput(result)  
+        return getUsers
     })
     .catch(err => console.log(err));
     
@@ -175,6 +175,10 @@ function showTableDataInForm() {
             e.preventDefault()
             updateUser(ID)
             ID = undefined
+            // document.querySelector('.form-div').classList.remove('visible')
+            fname.value=''
+            lname.value=''
+            u_img.value=''
         })
        
     })
