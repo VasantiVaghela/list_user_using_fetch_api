@@ -10,7 +10,7 @@ let submit = document.querySelector('#submit')
 let form = document.querySelector('.user-details')
 let addUserBtn = document.querySelector('.add-user')
 let addNewUserBtn = document.querySelector('.add-new-user')
-let closeModal = document.querySelector('close-modal')
+let closeModal = document.querySelector('.close-modal')
 
 let result;
 
@@ -42,7 +42,7 @@ addNewUserBtn.addEventListener('click', function() {
 })
 
 closeModal.addEventListener('click', function() {
-    document.querySelector('.modal').getElementsByClassName.display = 'none';
+    document.querySelector('.modal').style.display = 'none';
 })
 
 // addNewUserBtn.addEventListener('click', function() {
@@ -170,7 +170,7 @@ function showTableDataInForm() {
     // console.log(userRowArray)
 
     userRowArray.map(row => {
-        
+        let ID
         row.addEventListener('click',function() {
             document.querySelector('.modal').style.display = 'block';
             ID = row.getAttribute('id')
